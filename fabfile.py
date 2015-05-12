@@ -20,7 +20,7 @@ env.ssh_config_path = '.ssh_config'
 
 @task
 def test():
-    pass
+    from test import 
 
 @task
 def temp():
