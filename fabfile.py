@@ -19,6 +19,10 @@ env.ssh_config_path = '.ssh_config'
 #env.host = 'virtual_machine'
 
 @task
+def test():
+    pass
+
+@task
 def temp():
     from .openstaxsetup.fabfile import temp
     print("root")

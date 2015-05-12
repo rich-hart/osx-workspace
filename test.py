@@ -3,7 +3,7 @@ from fabfile import temp
 
 class TestStringMethods(unittest.TestCase):
   def test_temp(self):
-      temp()
+      pass
   def test_upper(self):
       self.assertEqual('foo'.upper(), 'FOO')
 
