@@ -1,0 +1,8 @@
+.ssh_config
+cnx-setup
+cnx-vagrant
+fabfile.pyc 
+legacy
+openstax-setup
+venv
+test.pyc

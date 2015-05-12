@@ -1,12 +1,12 @@
 
-from fabric.operations import run, put
-from fabric.context_managers import lcd, path
+from fabric.operations import run, put, sudo
+from fabric.context_managers import lcd, path, cd
 from fabric.api import local, env, task
 
 #DEPLOY_DIR='/opt'
 env.DEPLOY_DIR = '/opt'
 env.rcfile="./.fabricrc"
-env.BRANCH="master"
+env.BRANCH="remote_install"
 #env.REMOTE='karenc'
 env.REMOTE="rich-hart"
 env.WORKSPACE="/Users/openstax/workspace"
@@ -20,9 +20,26 @@ env.ssh_config_path = '.ssh_config'
 
 @task
 def temp():
-    pass
+    from .openstaxsetup.fabfile import temp
+    print("root")
+    #temp()
+#    deploy()
 
-def _create_vm():
+@task
+def load_script(n=0):
+    with cd(env.DEPLOY_DIR):
+        put("/Users/openstax/workspace/cnx-vagrant/bootstrap_{}.sh".format(n),"boostrap_{}.sh".format(n), use_sudo=True)
+        sudo("chmod 755 boostrap_{}.sh".format(n))
+        sudo("./boostrap_{}.sh".format(n))
+#@task
+#def temp():
+#    pass
+@task
+def generate_key():
+    with lcd("cnx-vagrant"):
+        local("vagrant ssh-config --host virtual_machine > {WORKSPACE}/.ssh_config".format(**env))
+@task
+def create_vm():
     # create vm
     with lcd("cnx-vagrant"):
         local("vagrant up")
@@ -69,10 +86,10 @@ def destroy():
     _destroy_vm()
     _rm_repos()
 
-@task
+#@task
 def create():
-    _clone_setups()
-    _create_vm()
+    _clone_repos()
+    create_vm()
 
 
 
@@ -145,6 +162,5 @@ def test_programs():
 
 def run_programs():
     pass
-
 
 
